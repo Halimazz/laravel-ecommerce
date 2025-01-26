@@ -10,10 +10,10 @@
     @foreach ( $products as $product )
         <div>
             <h1>{{ $product->name }}</h1>
-            <p>{{ $product->price }}</p>
-            <p>{{ $product->description }}</p>
-            <p>{{ $product->stock }}</p>
             <img src="{{ url('storage/' . $product->image) }}" alt="" height="100px" width="100px">
+            <form action="{{ route('products.show', $product->id) }}" method="get">
+                <button type="submit" name="">Show Detail</button>
+            </form>
         </div>
         
     @endforeach

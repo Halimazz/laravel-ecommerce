@@ -45,17 +45,19 @@ class ProductController extends Controller
         ]);
 
         $file = $request->file('image');
-        // $filename = $file->getClientOriginalName();
-        $path = time().'_'.$request->name.'-'.$file->getClientOriginalName();
 
-        Storage::disk('public')->put($path, file_get_contents($file));
+        $originalPath = time().'_'.$request->name.'-'.$file->getClientOriginalName();
+        $hashedPath = hash('sha256', $originalPath);
+        Storage::disk('public')->put($hashedPath, file_get_contents($file));
+
+
 
 
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
-            'image' => $path,
+            'image' => $hashedPath,
             'stock' => $request->stock,
         ]);
 
@@ -72,7 +74,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+        return view('product/show_product', compact('product'));
     }
 
     /**
