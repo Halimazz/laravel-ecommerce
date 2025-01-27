@@ -13,6 +13,7 @@
     <p>Price : {{ $product->price }}</p>
     <p>Stock : {{ $product->stock }}</p>
     <img src="{{ url('storage/'. $product->image) }}" alt="" height="100px" width="100px">
+    <a href="{{ route('products.edit', $product->id) }}">Edit</a>
     
 </body>
 </html>
