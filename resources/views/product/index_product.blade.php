@@ -7,6 +7,8 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="{{ route('products.create') }}">Tambah Produk</a>
+    <a href="{{ route('cart.show') }}">Keranjang</a>
     @foreach ( $products as $product )
         <div>
             <h1>{{ $product->name }}</h1>
