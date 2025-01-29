@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
@@ -22,6 +24,8 @@ Route::post('/cart/{product}', [CartController::class, 'addToCart'])->name('cart
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 Route::patch('/cart/{cart}', [CartController::class, 'updateCart'])->name('cart.update');
 Route::delete('/cart/{cart}', [CartController::class, 'destroyCart'])->name('cart.destroy');
+
+Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 
 
