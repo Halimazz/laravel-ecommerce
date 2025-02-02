@@ -27,5 +27,6 @@ Route::delete('/cart/{cart}', [CartController::class, 'destroyCart'])->name('car
 
 Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
+Route::resource('orders', OrderController::class);
 
 

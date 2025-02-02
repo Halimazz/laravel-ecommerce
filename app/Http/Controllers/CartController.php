@@ -65,7 +65,7 @@ class CartController extends Controller
         }
 
         // Redirect ke halaman produk dengan pesan sukses
-        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     } catch (\Exception $e) {
         // Redirect kembali dengan pesan error jika terjadi masalah
         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

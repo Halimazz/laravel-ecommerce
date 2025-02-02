@@ -40,6 +40,13 @@
             @csrf
             @method('delete')
             <button type="submit">Delete</button>
+        </form>
+        <form  action="{{ route('checkout') }}" method="post">
+            @csrf
+             <input type="checkbox" name="product_ids[]" value="{{ $cart->product_id }}"> Pilih untuk checkout
+            <button type="submit">Checkout</button>  
+        </form>
     @endforeach
+
 </body>
 </html>

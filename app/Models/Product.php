@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Models;
-use illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Testing\Fluent\Concerns\Has;
+
 
 class Product extends Model
 {
-    // use HasFactory;
+    use HasFactory;
 
     protected $table = 'products';
     protected $fillable = [
@@ -20,9 +21,9 @@ class Product extends Model
     ];
 
 
-    public function orders()
+    public function transactions()
     {
-        return $this->belongsToMany(Order::class);
+        return $this->hasMany(Transaction::class);
     }
 
     public function carts()
