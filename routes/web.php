@@ -28,5 +28,8 @@ Route::delete('/cart/{cart}', [CartController::class, 'destroyCart'])->name('car
 Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 Route::resource('orders', OrderController::class);
+Route::post('/orders/{order}/pay', [OrderController::class, 'submit_order_receipt'])->name('ordersReceipt.pay');
+Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm_order_receipt'])->name('ordersReceipt.confirm');
+
 
 

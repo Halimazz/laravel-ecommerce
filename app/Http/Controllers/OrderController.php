@@ -9,9 +9,14 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -152,15 +157,18 @@ public function checkout(Request $request)
      */
     public function show(Order $order)
     {
+        // dd($order);
         $transactions = $order->transactions()->get();
 
     // Periksa apakah ada transaksi
-    if ($transactions->isEmpty()) {
-        return view('orders/show_orders', compact('order'))->with('error', 'Tidak ada transaksi yang ditemukan.');
-    } else {
-        return view('orders/show_orders', compact('order'));
+        if ($transactions->isEmpty()) {
+            return view('orders/show_orders', compact('order'))->with('error', 'Tidak ada transaksi yang ditemukan.');
+        } else {
+            return view('orders/show_orders', compact('order'));
+        }
     }
-    }
+
+
     
 
     /**
@@ -185,5 +193,43 @@ public function checkout(Request $request)
     public function destroy(string $id)
     {
         //
+    }
+
+    public function submit_order_receipt(Order $order, Request $request)
+    {
+    // Validasi input
+    $request->validate([
+        'order_receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // Maks 2MB
+    ]);
+
+    // Ambil file setelah validasi sukses
+    $file = $request->file('order_receipt');
+
+    // Buat nama file unik
+    $originalPath = time() . '_' . $order->id . '-' . $file->getClientOriginalName();
+    $hashedPath = hash('sha256', $originalPath) . '.' . $file->getClientOriginalExtension(); 
+
+        try {
+            // Simpan file ke penyimpanan 'public'
+            Storage::disk('public')->putFileAs('', $file, $hashedPath);
+
+            // Update order dengan path file
+            $order->id = $order->id;
+            $order->payment_receipt = $hashedPath;
+            // dd($order);
+            $order->save();
+            
+            return redirect()->back()->with('success', 'Bukti pembayaran berhasil diunggah!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function confirm_order_receipt(Order $order)
+    {
+        $order->is_paid = 1;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Pembayaran berhasil dikonfirmasi!');
     }
 }
