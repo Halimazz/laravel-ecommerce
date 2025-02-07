@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,6 +31,9 @@ Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout')
 Route::resource('orders', OrderController::class);
 Route::post('/orders/{order}/pay', [OrderController::class, 'submit_order_receipt'])->name('ordersReceipt.pay');
 Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm_order_receipt'])->name('ordersReceipt.confirm');
+
+//route profile with resource
+Route::resource('profile', ProfileController::class);
 
 
 
