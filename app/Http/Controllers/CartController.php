@@ -101,33 +101,31 @@ class CartController extends Controller
      * Update the specified resource in storage.
      */
     public function updateCart(Cart $cart, Request $request)
-    {
-        // Validasi input
+{
+    // Validasi input
+    $request->validate([
+        'amount' => 'required|gte:1|lte:' . $cart->product->stock,
+    ]);
 
-        $request->validate([
-            'amount' => 'required|gte:1|lte:' . $cart->product->stock,
-        ]);
-
-        try {
-            // Validasi input
-            $request->validate([
-                'amount' => 'required|integer|min:1',
-            ]);
-    
-            // Cek stok barang
-            $product = $cart->product; // Asumsikan relasi `product` ada di model Cart
-            if ($request->amount > $product->stock) {
-                return redirect()->back()->with('error', 'Jumlah yang diminta melebihi stok barang.');
-            }
-    
-            // Update jumlah di cart
-            $cart->update(['amount' => $request->amount]);
-    
-            return redirect()->route('cart.show')->with('success', 'Keranjang berhasil diperbarui!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    try {
+        // Cek stok barang
+        $product = $cart->product; // Asumsikan relasi `product` ada di model Cart
+        if ($request->amount > $product->stock) {
+            // Mengembalikan response JSON jika stok tidak mencukupi
+            return response()->json(['error' => 'Jumlah yang diminta melebihi stok barang.'], 400);
         }
+
+        // Update jumlah di cart
+        $cart->update(['amount' => $request->amount]);
+
+        // Mengembalikan response JSON jika update berhasil
+        return response()->json(['success' => 'Keranjang berhasil diperbarui!']);
+    } catch (\Exception $e) {
+        // Mengembalikan response JSON jika terjadi kesalahan
+        return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
     }
+}
+
     
 
     /**
@@ -137,9 +135,11 @@ class CartController extends Controller
     {
         try {
             $cart->delete();
-            return redirect()->route('cart.show')->with('success', 'Produk berhasil dihapus dari keranjang!');
+            // return redirect()->route('cart.show')->with('success', 'Produk berhasil dihapus dari keranjang!');
+            return response()->json(['success' => 'Produk berhasil dihapus dari keranjang!']);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            // return redirect()->route('cart.show')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     
         //

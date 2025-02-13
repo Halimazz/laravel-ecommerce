@@ -102,6 +102,9 @@
     }
 </style>
 @section('content')
+    @php
+        $total_price = 0;
+    @endphp
     <div class="order-detail-container">
         <!-- Tombol "Back to orders" -->
         <a href="{{ route('orders.index') }}" class="back-link">Back to orders</a>
@@ -122,8 +125,13 @@
                     <p><strong>Amount:</strong> {{ $transaction->amount }}</p>
                 </div>
             </div>
+            @php
+                $total_price += $transaction->product->price * $transaction->amount;
+            @endphp
         @endforeach
-
+            <div class="transaction-item">
+                <p><strong>Total Price:</strong> Rp {{ number_format($total_price, 0, ',', '.') }}</p>
+            </div>
         <!-- Form upload payment receipt -->
         @if ($order->is_paid == false && $order->payment_receipt == null)
             <div class="upload-form">
