@@ -1,5 +1,33 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e3e6f0;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+        .btn-outline-secondary {
+            border-radius: 5px;
+        }
+        .btn-warning {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            border-radius: 5px;
+        }
+        .alert {
+            border-radius: 5px;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -52,30 +80,3 @@
     </div>
 @endsection
 
-@section('styles')
-    <style>
-        .card {
-            border-radius: 10px;
-        }
-        .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e3e6f0;
-        }
-        .img-fluid {
-            max-width: 100%;
-            height: auto;
-        }
-        .btn-outline-secondary {
-            border-radius: 5px;
-        }
-        .btn-warning {
-            border-radius: 5px;
-        }
-        .btn-primary {
-            border-radius: 5px;
-        }
-        .alert {
-            border-radius: 5px;
-        }
-    </style>
-@endsection
